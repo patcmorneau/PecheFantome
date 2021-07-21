@@ -1,5 +1,6 @@
 import shapefile
 import csv
+from shapely.geometry import Point, Polygon
 
 #convertir des degrés a des sous-unités du degré 
 def deg2sud(latitude,longitude):
@@ -15,7 +16,7 @@ def deg2sud(latitude,longitude):
 	deg = '{}'.format(deg)
 	minutes = '{}'.format(minutes)
 	seconds = '{}'.format(seconds)
-	latitude = deg +"°"+minutes+"’"+seconds+'"'+directiony
+	latitude = deg +"°"+minutes+"’"+seconds+"’’"+directiony
 
 	if longitude < 0 :
 		longitude = abs(longitude)
@@ -29,13 +30,11 @@ def deg2sud(latitude,longitude):
 	deg = '{}'.format(deg)
 	minutes = '{}'.format(minutes)
 	seconds = '{}'.format(seconds)
-	longitude = deg +"°"+minutes+"’"+seconds+'"'+directionx
-	
+	longitude = deg +"°"+minutes+ "’" +seconds+"’’"+directionx
 	return latitude,longitude
 			
 #convertir des sous-unités du degré a des degrés 			
-def sud2deg(latitude,longitude): 
-	#print(len(x))
+def sud2deg(latitude,longitude):
 	temp = longitude.split("°")
 	deg = float(temp[0])
 	del temp[0]
@@ -73,6 +72,8 @@ def ecriture_polygon_2shp(dic,filename):
 	w.field('name','c','40')
 	for element in liste_element:
 		coordinates = dic[element]
+		coordinates = list(coordinates)
+		print(coordinates)
 		w.poly([coordinates])
 		w.record(element)
 	w.close()
@@ -84,15 +85,17 @@ def ecriture_points_2shp(liste_points, filename):
 	w.record('multipoint')
 	w.close()
 
-def Lat_Long_2_x_y(latitude,longitude):
-	y = latitude
-	x = longitude
-	return x,y
-
 def changer_direction(coord):
 	coord = coord * -1
 	return coord
 
+def is_it_in_poly(point,polygon):
+	x = point[0]
+	y = point[1]
+	point = Point(x,y)
+	polygon = Polygon(polygon)
+	result = point.within(polygon)
+	return result
 
 
 

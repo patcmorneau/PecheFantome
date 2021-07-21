@@ -51,4 +51,3 @@ for i in range(len(zones)):
 GGlib.ecriture_polygon_2shp(acpg_zones, "zone_de_peche_acpg.shp")
 #print(acpg_zones)
 
-

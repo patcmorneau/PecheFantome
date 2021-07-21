@@ -53,6 +53,7 @@ def get_elements(element_name,element_description):
 	areas = gpx.to_xml()
 	return areas
 
+#extract coordinates from xml format to a python list
 def extract_coordinates(areas):
 	root = ET.fromstring(areas)
 	liste_coordinates = []
